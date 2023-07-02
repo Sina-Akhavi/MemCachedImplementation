@@ -131,7 +131,7 @@ public class HashTable {
             System.out.print("index " + i + " is " + cell.value + "==>");
             while (cell.next != null) {
                 cell = cell.next;
-                System.out.print("index " + i + " is " + cell.value + "==>");
+                System.out.print("index " + i + " is " + cell.value + "with key: " + cell.key + "==>");
             }
             System.out.println();
         }
@@ -148,7 +148,7 @@ public class HashTable {
         hashTable.write("sian", value, i, j);
 
         int value1 = 6; 
-        hashTable.write("sina", value1, i, j);
+        hashTable.write("sian", value1, i, j);
         
         int value2 = 16; 
         hashTable.write("dnas", value2, i, j);
