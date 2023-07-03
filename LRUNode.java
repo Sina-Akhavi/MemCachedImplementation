@@ -1,3 +1,5 @@
+import java.util.concurrent.Semaphore;
+
 class LRU {
     private LRUNode head;
     
@@ -7,11 +9,14 @@ class LRU {
 
     private int counter;
 
+    private Semaphore semaphore;
+
     public LRU() {
         this.size = 0;
         this.counter = 0;
         this.head = null;
         this.tail = null;
+        this.semaphore = new Semaphore(1);
     }
 
     public void doAnything(int i, int j) {
@@ -64,7 +69,15 @@ class LRU {
     }
 
     
-    public void show() {
+    public void show(int chunkSizeId) {
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        System.out.println("------------------ LRU " + chunkSizeId + " ---------------------");
 
         LRUNode cell = this.head;
         
@@ -73,7 +86,9 @@ class LRU {
             cell = cell.next;
         }
         
-        System.out.println("\n***********************");
+        System.out.println("\n----------------------------------------");
+
+        semaphore.release();
     }   
 
     

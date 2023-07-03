@@ -54,7 +54,6 @@ class HashTable {
     public HashTable(int size) {
         this.size = size;
         cells = new HashCell[this.size];
-
     }
 
     public int generateIndex(String key) {
@@ -90,12 +89,10 @@ class HashTable {
     }
 
     public void write(String key, int value, int i, int j) {
-        // if the key exists, it is updated
 
         int index = this.generateIndex(key);
         HashCell cell = this.cells[index];
         if (cell == null) {
-            System.out.println("Hello1");
             HashCell newCell = new HashCell(null, key, value, i, j);
             this.cells[index] = newCell;
             return;
@@ -108,7 +105,6 @@ class HashTable {
                 return;
             }
             if (cell.next == null) {
-                System.out.println("Hello2");
                 cell.next = new HashCell(null, key, value, i, j);
                 return;
             }
@@ -117,7 +113,9 @@ class HashTable {
 
     }
 
-    public void show() {
+    public void show(int chunkSizeId) {
+        System.out.println("------------------------- Hash Table " + chunkSizeId + 
+            " -------------------------");
 
         for (int i = 0; i < this.size; i++) {
             HashCell cell = this.cells[i];
@@ -125,10 +123,11 @@ class HashTable {
                 continue;
             }
 
-            System.out.print("index " + i + " is " + cell.value + "==>");
+            System.out.print("index " + i + " value:" + cell.value + "  key:" + cell.key +" ==>");
             while (cell.next != null) {
                 cell = cell.next;
-                System.out.print("index " + i + " is " + cell.value + "with key: " + cell.key + "==>");
+                System.out.print("index " + i + " value:" + cell.value +
+                     " key:" + cell.key +" ==>");
             }
             System.out.println();
         }

@@ -1,15 +1,30 @@
-public class Page {
+import java.util.concurrent.Semaphore;
 
+public class Page {
     static final int MG = 1000000;
+
     private int[][] pageArray;
-    private int chunkSize;
+
+    
+    public int chunkSize;
+
     private int filledChunkCounter;
+
+    private LRU lru;
+
+    private Semaphore semaphore;
+
+    private HashTable hashTable;
+    // create HashTable
 
     
     public Page(int chunkSize) {
         this.chunkSize = chunkSize;
         this.createPage();
         this.filledChunkCounter = 0;
+        this.lru = new LRU();
+        this.semaphore = new Semaphore(1);
+        this.hashTable = new HashTable(20);
     }
 
     public int[] findEmptyChunk() {
@@ -23,9 +38,17 @@ public class Page {
     }
 
     public boolean isChunkEmpty(int i, int j) {
-        if (this.pageArray[i][j] == 0) {
-            return true;
+        try {
+            this.semaphore.acquire();
+            if (this.pageArray[i][j] == 0) {
+                this.semaphore.release();
+                return true;
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
         return false;
     }
 
@@ -37,21 +60,19 @@ public class Page {
     } 
 
     public void createPage() {
-        // obtain dimensions of the pageArray
         double numChunksDouble = MG / this.chunkSize;
         int numRowsCols = (int) Math.sqrt(numChunksDouble);
 
         this.pageArray = new int[numRowsCols][numRowsCols];
-
     }
 
-    public int[] addData(int data, int size) {
+    public int[] addData(int data, String key) {
 
         int[] output = new int[2];
         output[0] = -1;            
         output[1] = -1; 
 
-        if (size > this.chunkSize) {
+        if (data > this.chunkSize) {
             return output;
         }
 
@@ -59,8 +80,14 @@ public class Page {
             int[] ij = this.findEmptyChunk();
             int i = ij[0];            
             int j = ij[1];
-
+            
             this.pageArray[i][j] = data;
+            this.lru.doAnything(i, j);
+            // update HashTable
+            this.hashTable.write(key, data, i, j);
+            System.out.println("data " + data + " added in " 
+                + "i= " + i + " j=" + j + " page chunksize " + this.chunkSize);
+            this.lru.show(this.chunkSize);
 
             return ij;
         } 
@@ -72,15 +99,28 @@ public class Page {
         return this.pageArray;
     }
 
-    public static createPages(int[] chunkSizes) {
-        int numPages = chunkSizes.length;
-        for (int i = 0; i < numPages; i++) {
-            double numChunksDouble = MG / chunkSizes[i];
-            int numRowsCols = (int) Math.sqrt(numChunksDouble);
+    public void show() {
+        System.out.println("*************************");
+        System.out.println("a " + this.chunkSize + "-chunkSize Page");
 
+        for (int i = 0; i < this.pageArray.length; i++) {
+            for (int j = 0; j < this.pageArray.length; j++) {
+                if (this.pageArray[i][j] != 0) {
+                    System.out.println("[" + i + "]" +"[" + j + "] ==> " + this.pageArray[i][j]);
+                }
+            }
         }
+        
+        System.out.println("*************************");
     }
 
+    public LRU getLRU() {
+        return this.lru;
+    }
+
+    public HashTable getHashTable() {
+        return this.hashTable;
+    }
 
 }
 
