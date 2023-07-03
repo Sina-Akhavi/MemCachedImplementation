@@ -1,14 +1,11 @@
+public class Page {
 
-
-
-
-
-class Page {
     static final int MG = 1000000;
     private int[][] pageArray;
     private int chunkSize;
     private int filledChunkCounter;
 
+    
     public Page(int chunkSize) {
         this.chunkSize = chunkSize;
         this.createPage();
@@ -75,37 +72,45 @@ class Page {
         return this.pageArray;
     }
 
+    public static createPages(int[] chunkSizes) {
+        int numPages = chunkSizes.length;
+        for (int i = 0; i < numPages; i++) {
+            double numChunksDouble = MG / chunkSizes[i];
+            int numRowsCols = (int) Math.sqrt(numChunksDouble);
 
-
-}
-
-
-public class Main {
-    public static void main(String[] args) {
-        int chunkSize = 2500;
-        Page page1 = new Page(chunkSize);
-
-        int[][] indexes = new int[6][2]; 
-        indexes[0] = page1.addData(50, 100);
-        indexes[1] = page1.addData(25, 200);
-        indexes[2] = page1.addData(14, 400);
-        indexes[3] = page1.addData(2, 201);
-        indexes[4] = page1.addData(45, 125);
-        indexes[5] = page1.addData(21, 140);
-
-        int[][] array = page1.getArray();
-
-        System.out.println("length: " + page1.getArray().length + 
-            "length: " + page1.getArray()[1].length);
-
-        for (int i = 0; i < indexes.length; i++) {
-            int[] ij = indexes[i];
-
-            System.out.println("at index " + ij[0] + " " +
-                 ij[1] + " There is " + array[ij[0]][ij[1]]);
         }
-
-        // System.out.println(array[39][20]);
-
     }
+
+
 }
+
+
+// public class Main {
+//     public static void main(String[] args) {
+//         int chunkSize = 2500;
+//         Page page1 = new Page(chunkSize);
+
+//         int[][] indexes = new int[6][2]; 
+//         indexes[0] = page1.addData(50, 100);
+//         indexes[1] = page1.addData(25, 200);
+//         indexes[2] = page1.addData(14, 400);
+//         indexes[3] = page1.addData(2, 201);
+//         indexes[4] = page1.addData(45, 125);
+//         indexes[5] = page1.addData(21, 140);
+
+//         int[][] array = page1.getArray();
+
+//         System.out.println("length: " + page1.getArray().length + 
+//             "length: " + page1.getArray()[1].length);
+
+//         for (int i = 0; i < indexes.length; i++) {
+//             int[] ij = indexes[i];
+
+//             System.out.println("at index " + ij[0] + " " +
+//                  ij[1] + " There is " + array[ij[0]][ij[1]]);
+//         }
+
+//         // System.out.println(array[39][20]);
+
+//     }
+// }

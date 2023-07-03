@@ -1,13 +1,12 @@
-import java.util.HashMap;
-
-import javax.sound.midi.Soundbank;
-
 class HashCell {
     public HashCell next;
+
     public String key;
+
     public int value;
+
     private int[] addressInPage;
-    
+
     public HashCell(HashCell next, String key, int value, int i, int j) {
         this.next = next;
         this.key = key;
@@ -20,14 +19,13 @@ class HashCell {
 
     public HashCell clone() {
         HashCell cel = new HashCell(this.next, this.key, this.value,
-            this.getAddressInPage()[0], this.getAddressInPage()[1] );
+                this.getAddressInPage()[0], this.getAddressInPage()[1]);
         return cel;
     }
 
     public HashCell() {
         addressInPage = new int[2];
     }
-    
 
     public void addData(String key, int value) {
         this.key = key;
@@ -48,7 +46,7 @@ class HashCell {
     }
 }
 
-public class HashTable {
+class HashTable {
     private HashCell[] cells;
 
     private int size;
@@ -73,13 +71,13 @@ public class HashTable {
 
         return generatedIndex;
     }
-    
+
     public int[] readForAddress(String key) {
         int index = this.generateIndex(key);
 
         HashCell cell = this.cells[index];
 
-        while(cell != null) {
+        while (cell != null) {
             if (cell.key == key) {
                 int[] addressInPage = cell.getAddressInPage();
                 return addressInPage;
@@ -92,8 +90,8 @@ public class HashTable {
     }
 
     public void write(String key, int value, int i, int j) {
-        // if the key exists, it is updated 
-        
+        // if the key exists, it is updated
+
         int index = this.generateIndex(key);
         HashCell cell = this.cells[index];
         if (cell == null) {
@@ -117,7 +115,6 @@ public class HashTable {
             cell = cell.next;
         }
 
-
     }
 
     public void show() {
@@ -137,61 +134,54 @@ public class HashTable {
         }
     }
 
-    public static void main(String[] args) {
-        int size = 10;
-        HashTable hashTable = new HashTable(size);
-        
-        int i = 3;
-        int j = 6;
-        int value = 5;
+    // public static void main(String[] args) {
+    //     int size = 10;
+    //     HashTable hashTable = new HashTable(size);
 
-        hashTable.write("sian", value, i, j);
+    //     int i = 3;
+    //     int j = 6;
+    //     int value = 5;
 
-        int value1 = 6; 
-        hashTable.write("sian", value1, i, j);
-        
-        int value2 = 16; 
-        hashTable.write("dnas", value2, i, j);
+    //     hashTable.write("sian", value, i, j);
 
-        int value3 = 26; 
-        hashTable.write("a", value3, i, j);
-        
-        int value4 = 88; 
-        hashTable.write("ndas", value4, i, j);
+    //     int value1 = 6;
+    //     hashTable.write("sian", value1, i, j);
+
+    //     int value2 = 16;
+    //     hashTable.write("dnas", value2, i, j);
+
+    //     int value3 = 26;
+    //     hashTable.write("a", value3, i, j);
+
+    //     int value4 = 88;
+    //     hashTable.write("ndas", value4, i, j);
+
+    //     hashTable.show();
 
 
-        
-        hashTable.show();
-        // int value2 = 7; 
+
+
+
+        // int value2 = 7;
         // hashTable.write("ttes", value2, i, j);
 
-        // int value3 = 4; 
+        // int value3 = 4;
         // hashTable.write("abcd", value3, i, j);
 
-        // int value4 = 2; 
+        // int value4 = 2;
         // hashTable.write("abdc", value4, i, j);
 
         // int value5 = 8;
         // hashTable.write("ieee", value5, i, j);
 
-
         // int value6 = 1;
         // hashTable.write("ieee", value6, i, j);
-
 
         // int value7 = 4;
         // hashTable.write("ieee", value7, i, j);
 
-        System.out.println(hashTable.generateIndex("a") + "  " + hashTable.generateIndex("sina"));
-
-
-
-    }
+        // System.out.println(hashTable.generateIndex("a") + "  " + hashTable.generateIndex("sina"));
 
 }
-
-
-
-
 
 
